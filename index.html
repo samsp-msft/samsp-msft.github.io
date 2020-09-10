@@ -1,6 +1,7 @@
 <html>
 
 <head>
+    <link type="text/css" rel="stylesheet" href="styles.css">
     <script>
         Math.log2 = Math.log2 || function(n) {
             return Math.log(n) / Math.log(2);
@@ -158,18 +159,27 @@
             }
 
             var redirect = getBool(queryParams.get("redirect"));
-            if (redirect) {
+            var repo = queryParams.get("SourceRepo");
+            var repos = document.getElementsByName('repo');
 
+            if (redirect) {
                 myCookie.AdditionalResponse = true;
-                var repo = queryParams.get("SourceRepo");
+
                 if (hasValue(repo)) {
                     myCookie.completedRepos.push(repo);
                 }
                 document.getElementById("intro1").style.display = "none";
                 document.getElementById("intro2").style.display = "block";
+            } else {
+                if (hasValue(repo)) {
+                    for (i = 0; i < repos.length; i++) {
+                        if (repos[i].value == repo) {
+                            repos[i].checked = true;
+                        }
+                    }
+                }
             }
 
-            var repos = document.getElementsByName('repo');
             for (i = 0; i < repos.length; i++) {
                 if (myCookie.completedRepos.includes(repos[i].value)) {
                     repos[i].disabled = true;
@@ -215,6 +225,8 @@
                 var url = "https://www.surveymonkey.com/r/R77X922?" + new URLSearchParams(params).toString();
 
                 window.open(url);
+            } else {
+                document.getElementById("selectRepo").style.display = "block";
             }
 
         }
@@ -230,7 +242,7 @@
     </h1>
 
     <div id="intro1">
-        <div>The purpose of this survey is to regularly assess and monitor the customer experience for repos manged by Microsoft Developer Division. Your answers here will be used to understand where we need to improve.</div>
+        <div>The purpose of this survey is to regularly assess and monitor the customer experience for repos managed by Microsoft Developer Division. Your answers here will be used to understand where we need to improve.</div>
         <div>You may receive periodic invites to this survey over time, please respond if you haven't already in the last 30 days so that we can assess whether we are actually improving.</div>
 
         <h2> Which repo do you wish to provide feedback on?</h2>
@@ -238,60 +250,71 @@
         </p>
     </div>
     <div id="intro2" style="display: none;">
-        <div>Thankyou for your responses. We really appreciate the feedback.</div>
+        <h2>Thankyou for your responses. We really appreciate the feedback.</h2>
         <div>If you wish to provide feedback for an additional repo, please select it from the list below</div>
     </div>
 
     <form>
-        <h3>.NET</h3>
-        <input type="radio" name="repo" value="dotnet/aspnetcore" id="dotnet_aspnetcore" data-title="ASP.NET Core" data-tech="ASP.NET">
-        <label for="dotnet_aspnetcore">dotnet/aspnetcore</label><br>
-        <input type="radio" name="repo" value="dotnet/machinelearning" id="dotnet_machinelearning" data-title="Machine Learning">
-        <label for="dotnet_machinelearning">dotnet/machinelearning</label><br>
-        <input type="radio" name="repo" value="dotnet/roslyn" id="dotnet_roslyn" data-title="Roslyn project">
-        <label for="dotnet_roslyn">dotnet/roslyn</label><br>
-        <input type="radio" name="repo" value="dotnet/runtime" id="dotnet_runtime" data-title=".NET Runtime">
-        <label for="dotnet_runtime">dotnet/runtime</label><br>
-        <input type="radio" name="repo" value="dotnet/sdk" id="dotnet_sdk" data-title=".NET SDK">
-        <label for="dotnet_sdk">dotnet/sdk</label><br>
-        <input type="radio" name="repo" value="dotnet/winforms" id="dotnet_winforms" data-title="Windows Forms">
-        <label for="dotnet_winforms">dotnet/winforms</label><br>
-        <input type="radio" name="repo" value="dotnet/wpf" id="dotnet_wpf" data-title="WPF">
-        <label for="dotnet_wpf">dotnet/wpf</label><br>
-        <h3>Microsoft</h3>
-        <input type="radio" name="repo" value="Microsoft/pylance-release" id="Microsoft_pylance-release" data-title="Pylance">
-        <label for="Microsoft_pylance-release">Microsoft/pylance-release</label><br>
-        <input type="radio" name="repo" value="Microsoft/pyright" id="Microsoft_pyright">
-        <label for="Microsoft_pyright">Microsoft/pyright</label><br>
-        <input type="radio" name="repo" value="Microsoft/vscode-python" id="Microsoft_vscode-python" data-title="VS Code Python extension">
-        <label for="Microsoft_vscode-python"> Microsoft/vscode-python
+        <div id="selectRepo" class="warning" style="display:none;">Please select a repo to continue!</div>
+        <div class="repos">
+            <div class="group">
+                <h3>.NET</h3>
+                <input type="radio" name="repo" value="dotnet/aspnetcore" id="dotnet_aspnetcore" data-title="ASP.NET Core" data-tech="ASP.NET">
+                <label for="dotnet_aspnetcore">dotnet/aspnetcore</label><br>
+                <input type="radio" name="repo" value="dotnet/machinelearning" id="dotnet_machinelearning" data-title="Machine Learning">
+                <label for="dotnet_machinelearning">dotnet/machinelearning</label><br>
+                <input type="radio" name="repo" value="dotnet/roslyn" id="dotnet_roslyn" data-title="Roslyn project">
+                <label for="dotnet_roslyn">dotnet/roslyn</label><br>
+                <input type="radio" name="repo" value="dotnet/runtime" id="dotnet_runtime" data-title=".NET Runtime">
+                <label for="dotnet_runtime">dotnet/runtime</label><br>
+                <input type="radio" name="repo" value="dotnet/sdk" id="dotnet_sdk" data-title=".NET SDK">
+                <label for="dotnet_sdk">dotnet/sdk</label><br>
+                <input type="radio" name="repo" value="dotnet/winforms" id="dotnet_winforms" data-title="Windows Forms">
+                <label for="dotnet_winforms">dotnet/winforms</label><br>
+                <input type="radio" name="repo" value="dotnet/wpf" id="dotnet_wpf" data-title="WPF">
+                <label for="dotnet_wpf">dotnet/wpf</label><br>
+            </div>
+            <div class="group">
+                <h3>Microsoft</h3>
+                <input type="radio" name="repo" value="Microsoft/pylance-release" id="Microsoft_pylance-release" data-title="Pylance">
+                <label for="Microsoft_pylance-release">Microsoft/pylance-release</label><br>
+                <input type="radio" name="repo" value="Microsoft/pyright" id="Microsoft_pyright">
+                <label for="Microsoft_pyright">Microsoft/pyright</label><br>
+                <input type="radio" name="repo" value="Microsoft/vscode-python" id="Microsoft_vscode-python" data-title="VS Code Python extension">
+                <label for="Microsoft_vscode-python"> Microsoft/vscode-python
             </label><br>
-        <input type="radio" name="repo" value="Microsoft/stl" id="Microsoft_stl" data-title="STL">
-        <label for="Microsoft_stl">Microsoft/stl</label><br>
-        <input type="radio" name="repo" value="Microsoft/TypeScript" id="Microsoft_TypeScript" data-title="Typescript">
-        <label for="Microsoft_TypeScript">Microsoft/TypeScript</label><br>
-        <input type="radio" name="repo" value="Microsoft/vcpkg" id="Microsoft_vcpkg">
-        <label for="Microsoft_vcpkg">Microsoft/vcpkg</label><br>
-        <input type="radio" name="repo" value="Microsoft/vscode" id="Microsoft_vscode" data-title="Visual Studio Code">
-        <label for="Microsoft_vscode">Microsoft/vscode</label><br>
-        <input type="radio" name="repo" value="Microsoft/vscode-c++" id="Microsoft_vscode-c++" data-title="VS Code C++ extension">
-        <label for="Microsoft_vscode-c++">Microsoft/vscode-c++</label><br>
-        <input type="radio" name="repo" value="Microsoft/GSL" id="Microsoft_GSL">
-        <label for="Microsoft_GSL">Microsoft/GSL</label><br>
-        <input type="radio" name="repo" value="Microsoft/CMakeTools" id="Microsoft_CMakeTools">
-        <label for="Microsoft_CMakeTools">Microsoft/CMakeTools</label><br>
-        <h3>Nuget</h3>
-        <input type="radio" name="repo" value="NuGet/NuGet.Home" id="NuGet_NuGet.Home" data-title="Nuget">
-        <label for="NuGet_NuGet.Home">NuGet/NuGet.Home</label><br>
-        <h3>Xamarin</h3>
-        <input type="radio" name="repo" value="xamarin/xamarin-android" id="xamarin_xamarin-android" data-title="Xamarin for Android">
-        <label for="xamarin_xamarin-android">xamarin/xamarin-android</label><br>
-        <input type="radio" name="repo" value="xamarin/xamarin-macios" id="xamarin_xamarin-macios" data-title="Xamarin for Mac & iOS">
-        <label for="xamarin_xamarin-macios">xamarin/xamarin-macios</label><br>
-        <input type="radio" name="repo" value="xamarin/Xamarin.Forms" id="xamarin_Xamarin.Forms" data-title="Xamarin Forms">
-        <label for="xamarin_Xamarin.Forms">xamarin/Xamarin.Forms </label><br>
-
-        <button onclick="nextBtn()">Next</button>
+                <input type="radio" name="repo" value="Microsoft/stl" id="Microsoft_stl" data-title="STL">
+                <label for="Microsoft_stl">Microsoft/stl</label><br>
+                <input type="radio" name="repo" value="Microsoft/TypeScript" id="Microsoft_TypeScript" data-title="Typescript">
+                <label for="Microsoft_TypeScript">Microsoft/TypeScript</label><br>
+                <input type="radio" name="repo" value="Microsoft/vcpkg" id="Microsoft_vcpkg">
+                <label for="Microsoft_vcpkg">Microsoft/vcpkg</label><br>
+                <input type="radio" name="repo" value="Microsoft/vscode" id="Microsoft_vscode" data-title="Visual Studio Code">
+                <label for="Microsoft_vscode">Microsoft/vscode</label><br>
+                <input type="radio" name="repo" value="Microsoft/vscode-c++" id="Microsoft_vscode-c++" data-title="VS Code C++ extension">
+                <label for="Microsoft_vscode-c++">Microsoft/vscode-c++</label><br>
+                <input type="radio" name="repo" value="Microsoft/GSL" id="Microsoft_GSL">
+                <label for="Microsoft_GSL">Microsoft/GSL</label><br>
+                <input type="radio" name="repo" value="Microsoft/CMakeTools" id="Microsoft_CMakeTools">
+                <label for="Microsoft_CMakeTools">Microsoft/CMakeTools</label><br>
+            </div>
+            <div>
+                <div class="group">
+                    <h3>Nuget</h3>
+                    <input type="radio" name="repo" value="NuGet/NuGet.Home" id="NuGet_NuGet.Home" data-title="Nuget">
+                    <label for="NuGet_NuGet.Home">NuGet/NuGet.Home</label><br>
+                    <h3>Xamarin</h3>
+                    <input type="radio" name="repo" value="xamarin/xamarin-android" id="xamarin_xamarin-android" data-title="Xamarin for Android">
+                    <label for="xamarin_xamarin-android">xamarin/xamarin-android</label><br>
+                    <input type="radio" name="repo" value="xamarin/xamarin-macios" id="xamarin_xamarin-macios" data-title="Xamarin for Mac & iOS">
+                    <label for="xamarin_xamarin-macios">xamarin/xamarin-macios</label><br>
+                    <input type="radio" name="repo" value="xamarin/Xamarin.Forms" id="xamarin_Xamarin.Forms" data-title="Xamarin Forms">
+                    <label for="xamarin_Xamarin.Forms">xamarin/Xamarin.Forms </label><br>
+                </div>
+            </div>
+            <div class="center">
+                <button type="button" onclick="nextBtn()">Next</button>
+            </div>
     </form>
 </body>
 
