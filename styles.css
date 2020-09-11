@@ -5,7 +5,7 @@ h1 {
     font-size: 18px;
     font-weight: 700;
     background-color: #00a3ef;
-    padding: 10px;
+    padding: 12px 20px;
 }
 
 body {
@@ -14,6 +14,7 @@ body {
     font-size: 14px;
     font-weight: 300;
     line-height: 21px;
+    background-color: #efefef;
 }
 
 label {
@@ -28,6 +29,19 @@ h2 {
     line-height: 27px;
 }
 
+article {
+    margin: 20px;
+}
+
+.main {
+    min-width: 728px;
+    max-width: 960px;
+    margin: 0 auto;
+    display: block;
+    width: 80%;
+    background-color: #ffffff;
+}
+
 .repos {
     margin-left: 20px;
     margin-right: 20px;
@@ -39,7 +53,7 @@ h2 {
 .group {
     display: block;
     float: left;
-    width: 300px;
+    width: 280px;
 }
 
 button {
